@@ -3,8 +3,7 @@
 TypeScript SDK for the [Hashline](../spec.md) agent audit ledger — append-only,
 hash-chained, tamper-evident logging for AI agent workloads.
 
-> **Status:** v0.1 (Milestone 9). Wire-compatible with the v1 HTTP API described
-> in `spec.md`.
+> **Status:** v0.1
 
 ## Install
 
@@ -19,8 +18,6 @@ import { Client } from "@hashline/sdk";
 
 const client = new Client({
   apiKey: process.env.HASHLINE_API_KEY,
-  // baseUrl defaults to the hosted API; override for local dev:
-  // baseUrl: "http://localhost:8787/v1",
 });
 
 // Single event — the run is auto-created on first ingest.
@@ -61,14 +58,21 @@ await client.batch("run_01HXYZ...", [
 - API keys must never be used from browsers; this SDK is for backend/server use.
 - Keys are Bearer-auth over TLS; rotate via the dashboard / control plane.
 
-## Running the example
+## Examples
 
-The example script in `examples/basic.ts` runs against a local dev Worker:
+| File | SDK | What it shows |
+|------|-----|---------------|
+| [`examples/basic.ts`](examples/basic.ts) | Raw fetch | Manual event + batch call, then verify |
+| [`examples/anthropic-tools.ts`](examples/anthropic-tools.ts) | `@anthropic-ai/sdk` | Tool-use loop; each step logged to Hashline |
+| [`examples/vercel-ai-sdk.ts`](examples/vercel-ai-sdk.ts) | `ai` (Vercel) | `generateText` with `onStepFinish` wired to Hashline |
+| [`examples/openai-tools.ts`](examples/openai-tools.ts) | `openai` | Tool-use loop; same pattern as the Anthropic example |
+
+All examples require `HASHLINE_API_KEY` and the relevant provider key, then:
 
 ```bash
-HASHLINE_API_KEY=al_test_... \
-HASHLINE_BASE_URL=http://localhost:8787/v1 \
-npx tsx examples/basic.ts
+npx tsx examples/anthropic-tools.ts   # HASHLINE_API_KEY + ANTHROPIC_API_KEY
+npx tsx examples/vercel-ai-sdk.ts     # HASHLINE_API_KEY + ANTHROPIC_API_KEY
+npx tsx examples/openai-tools.ts      # HASHLINE_API_KEY + OPENAI_API_KEY
 ```
 
 It emits a small agent run (`run_started` → `tool_call`/`tool_result` batch →

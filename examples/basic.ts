@@ -1,19 +1,14 @@
 // examples/basic.ts — end-to-end example for the Hashline SDK.
 //
 // What it does:
-//   1. Creates a Client pointed at a local dev Worker (spec milestone 3+).
-//   2. Emits a `run_started`, a `tool_call`/`tool_result` pair, and a `run_ended`
-//      — both via single event() calls and one batch().
+//   1. Creates a Client connected to the Hashline API.
+//   2. Emits a run_started, a tool_call/tool_result batch, and a run_ended.
 //   3. Calls POST /v1/runs/:id/verify and asserts the chain is valid.
 //
-// Prerequisites:
-//   - Hashline dev Worker running locally (e.g. `npm run dev` in the server
-//     repo), exposing http://localhost:8787/v1.
-//   - An API key with `events:write` + `runs:read` scopes.
-//
 // Usage:
-//   HASHLINE_API_KEY=al_test_... HASHLINE_BASE_URL=http://localhost:8787/v1 \
-//     npx tsx examples/basic.ts
+//   HASHLINE_API_KEY=al_live_... npx tsx examples/basic.ts
+//
+// By default the SDK connects to https://api.hashline.dev/v1.
 //
 // Exits 0 on success, 1 on any failure.
 
